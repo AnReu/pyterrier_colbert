@@ -27,7 +27,7 @@ def load_checkpoint(path, model, optimizer=None, do_print=True):
 
     checkpoint['model_state_dict'] = new_state_dict
 
-    model.load_state_dict(checkpoint['model_state_dict'])
+    model.load_state_dict(checkpoint['model_state_dict'], False)
 
     if optimizer:
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
