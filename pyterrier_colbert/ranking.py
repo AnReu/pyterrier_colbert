@@ -555,14 +555,14 @@ class ColBERTFactory():
         embsD = self.get_embedding(pid)
         return self._explain(query, embsD, idsD)
 
-    def explain_text(self, query : str, document : str):
+    def explain_text(self, query : str, document : str, fig_size=(4,12)):
         """
         Provides a diagram explaining the interaction between a query and the text of a document
         """
         embsD, idsD = self.args.inference.docFromText([document], with_ids=True)
-        return self._explain(query, embsD, idsD)
+        return self._explain(query, embsD, idsD, fig_size)
     
-    def _explain(self, query, embsD, idsD):
+    def _explain(self, query, embsD, idsD, fig_size):
         embsQ, idsQ, masksQ = self.args.inference.queryFromText([query], with_ids=True)
 
         interaction = (embsQ[0] @ embsD[0].T).cpu().numpy().T
@@ -573,7 +573,7 @@ class ColBERTFactory():
 
         tokenmap = {"[unused1]" : "[D]", "[unused0]" : "[Q]"}
 
-        fig = plt.figure(figsize=(4, 12)) 
+        fig = plt.figure(figsize=fig_size) 
         gs = GridSpec(2, 1, height_ratios=[1, 20]) 
 
         ax1=fig.add_subplot(gs[0])
